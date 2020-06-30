@@ -50,9 +50,13 @@ export default {
     onMouseDown (e, touch = false) {
       // Prevent a double mouse down on touch devices.
       if ('ontouchstart' in window && !touch) return false
-      const { clickHoldAnEvent, focusAnEvent, resizeAnEvent, dragAnEvent } = this.domEvents
 
-      // If the delete button is already out and event is on focus then delete event.
+      const { clickHoldAnEvent, focusAnEvent, resizeAnEvent, dragAnEvent } = this.domEvents
+      console.log('onMouseDown event handler')
+
+      focusAnEvent.mousedUp = false // Reinit the variable.
+
+      // If the delete button is already out and event is focused then delete the event.
       // Return true so the event-click function (if any) is not called.
       if (focusAnEvent._eid === this.event._eid && clickHoldAnEvent._eid === this.event._eid) {
         return true
@@ -80,6 +84,8 @@ export default {
      * All mouseup on event, should be put there to avoid conflicts with other cases.
      */
     onMouseUp (e) {
+      console.log('on event mouseup')
+
       // Don't allow mouseup to be fired on different event than mousedown for the onEventClick function.
       if (this.domEvents.focusAnEvent._eid === this.event._eid) {
         // This is used in the global mouseup handler.
@@ -98,11 +104,14 @@ export default {
     },
 
     onTouchStart (e) {
-      // Prevent the text selection prompt on touch device if editable events - unless on title.
-      // So the delete button will show up nicely without the text prompt.
-      if (this.vuecal.editEvents.drag && !e.target.className.includes('vuecal__event-title')) {
-        e.returnValue = false
-      }
+      // e.returnValue = false
+      // return false
+      // console.log('onTouchStart event handler')
+      // // Prevent the text selection prompt on touch device if editable events - unless on title.
+      // // So the delete button will show up nicely without the text prompt.
+      // if (this.vuecal.editEvents.drag && !e.target.className.includes('vuecal__event-title')) {
+      //   e.returnValue = false
+      // }
       this.onMouseDown(e, true)
     },
 
@@ -220,6 +229,7 @@ export default {
         [this.event.class]: !!this.event.class,
         'vuecal__event--focus': this.event.focused,
         'vuecal__event--resizing': this.event.resizing,
+        'vuecal__event--editing-title': this.event.titleEditing,
         'vuecal__event--background': this.event.background,
         'vuecal__event--deletable': this.event.deleting,
         'vuecal__event--all-day': this.event.allDay,

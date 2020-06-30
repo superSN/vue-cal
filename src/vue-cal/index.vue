@@ -1,5 +1,6 @@
 <template lang="pug">
 .vuecal__flex.vuecal(column :class="cssClasses" ref="vuecal" :lang="locale")
+  | ({{ domEvents.focusAnEvent.mousedUp }})
   vuecal-header(
     :options="$props"
     :edit-events="editEvents"
@@ -676,7 +677,7 @@ export default {
       const mouseUpOnEvent = this.isDOMElementAnEvent(e.target)
       const eventClicked = focusAnEvent.mousedUp // If has mousedown & mouseup on the same event.
       focusAnEvent.mousedUp = false // Reinit the variable for next mouseup.
-
+      console.log('on global mouseup')
       if (mouseUpOnEvent) this.domEvents.cancelClickEventCreation = true
 
       // Skip the rest if an event was created successfully.
@@ -751,6 +752,11 @@ export default {
       // On event click (mousedown + mouseup on the same event), call the onEventClick function if exists
       // and if not dragging handle or deleting event.
       const eventClickHandler = typeof this.onEventClick === 'function'
+      console.log('mouseup global handler', {
+        eventClicked,
+        isClickHoldingEvent,
+      }, eventClicked && !hasResized && !isClickHoldingEvent && !dragCreatedEvent && eventClickHandler)
+
       if (eventClicked && !hasResized && !isClickHoldingEvent && !dragCreatedEvent && eventClickHandler) {
         const event = this.view.events.find(e => e._eid === focusAnEvent._eid)
         return this.onEventClick(event, e)
@@ -1181,19 +1187,12 @@ export default {
     if (resize || drag || create || deletable || title || hasEventClickHandler) {
       window.addEventListener(hasTouch ? 'touchend' : 'mouseup', this.onMouseUp)
     }
+
     if (resize || drag || (create && this.dragToCreateEvent)) {
       window.addEventListener(hasTouch ? 'touchmove' : 'mousemove', this.onMouseMove, { passive: false })
     }
 
     if (title) window.addEventListener('keyup', this.onKeyUp)
-
-    // Disable context menu on touch devices on the whole vue-cal instance.
-    if (hasTouch) {
-      this.$refs.vuecal.oncontextmenu = function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }
 
     // https://github.com/antoniandre/vue-cal/issues/221
     this.alignWithScrollbar()
@@ -1218,8 +1217,9 @@ export default {
     window.removeEventListener(hasTouch ? 'touchmove' : 'mousemove', this.onMouseMove, { passive: false })
     window.removeEventListener(hasTouch ? 'touchend' : 'mouseup', this.onMouseUp)
     window.removeEventListener('keyup', this.onKeyUp)
+    // window.removeEventListener('touchstart', e => e.returnValue = false)
 
-    // Don't keep the ticking running if unused.
+    // Clear the watchRealTime timer.
     if (this.timeTickerIds[0]) clearTimeout(this.timeTickerIds[0])
     if (this.timeTickerIds[1]) clearTimeout(this.timeTickerIds[1])
     this.timeTickerIds = [null, null]

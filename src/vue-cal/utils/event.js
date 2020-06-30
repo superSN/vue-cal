@@ -40,6 +40,7 @@ export default class EventUtils {
     deletable: true,
     deleting: false,
     titleEditable: true,
+    titleEditing: false,
     resizable: true,
     resizing: false,
     draggable: true,

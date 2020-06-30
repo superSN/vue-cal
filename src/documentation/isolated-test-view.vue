@@ -12,14 +12,13 @@ div.test-view
     :active-view.sync="view"
     @view-change="log"
     :on-event-click="log")
-  p {{ logs }}
-  vue-cal.ml-2.mr-1.vuecal--blue-theme(
+  vue-cal.ml-2.mr-1.vuecal--blue-theme.vuecal--full-height-delete(
     show-all-day-events
+    active-view="day"
     :disable-views="['years', 'year']"
-    :editable-events="{ title: false, drag: false, resize: false, delete: true, create: true }"
+    :editable-events="{ title: true, drag: false, resize: false, delete: true, create: true }"
     :events="events"
     :drag-to-create-event="false"
-    :split-days="daySplits"
     :on-event-click="onEventClick"
     :min-split-width="150"
     sticky-split-labels)
