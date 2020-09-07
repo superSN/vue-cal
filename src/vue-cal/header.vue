@@ -164,7 +164,6 @@ export default {
     border: none;
     padding: 0em 1em;
     font-size: 1em;
-    line-height: 2em;
     height : 2em;
     margin-right : 0.3em;
     border : 1px solid #000;
