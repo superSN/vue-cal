@@ -1,12 +1,14 @@
 <template lang="pug">
 //- This is an isolated test view. Just for testing purpose.
 div.test-view
-  vue-cal.ml-2.mr-1.vuecal--blue-theme(
-    show-all-day-events
+  vue-cal.ml-2.mr-1(
     :events="events"
-    editable-events
-    :split-days="daySplits"
+    :time="false"
+    :todayButton='true'
+    :events-on-month-view="'short'"
+    :disable-views="['years', 'year', 'day']"
     sticky-split-labels
+    locale="zh-cn"
     :on-event-click="() => (clicksCount++)")
   p clicks: {{clicksCount}}
 </template>
@@ -61,8 +63,8 @@ export default {
 <style lang="scss">
 .vuecal {}
 .vuecal__event {
-  background-color: rgba(160, 220, 255, 0.5);
-  border: 1px solid rgba(0, 100, 150, 0.15);
+  background-color:#FAFAFA;
+  border: 1px solid #EDEEEE;
 }
 
 // Global.

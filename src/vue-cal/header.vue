@@ -1,54 +1,56 @@
 <template lang="pug">
 .vuecal__header
-  .vuecal__flex.vuecal__menu(
+  .vuecal__bar(v-if="!options.hideTitleBar")
+    .vuecal__bar-slider.vuecal__flex.vuecal__menu(
     v-if="!options.hideViewSelector"
     role="tablist"
     aria-label="Calendar views navigation")
-    button.vuecal__view-btn(
-      type="button"
-      v-if="v.enabled"
-      :class="{ 'vuecal__view-btn--active': view.id === id, 'vuecal__view-btn--highlighted': highlightedControl === id }"
-      v-for="(v, id) in viewProps.views"
-      @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, id, $data)"
-      @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, id, $data)"
-      @click="switchView(id, null, true)"
-      :aria-label="`${v.label} view`") {{ v.label }}
-  .vuecal__title-bar(v-if="!options.hideTitleBar")
-    button.vuecal__arrow.vuecal__arrow--prev(
-      type="button"
-      :class="{ 'vuecal__arrow--highlighted': highlightedControl === 'previous' }"
-      @click="previous"
-      @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'previous', $data)"
-      @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'previous', $data)"
-      :aria-label="`Previous ${view.id}`")
-      slot(name="arrow-prev")
-    .vuecal__flex.vuecal__title(grow)
-      //- Best way to disable transition is to convert it to simple div tag.
-      component(:is="options.transitions ? 'transition' : 'div'" :name="`slide-fade--${transitionDirection}`")
-        component(
-          :type="!!broaderView && 'button'"
-          :is="broaderView ? 'button' : 'span'"
-          :key="`${view.id}${view.startDate.toString()}`"
-          @click="!!broaderView && switchToBroaderView()"
-          :aria-label="!!broaderView && `Go to ${broaderView} view`")
-          slot(name="title")
-    button.vuecal__today-btn(
-      type="button"
-      v-if="options.todayButton"
-      :class="{ 'vuecal__today-btn--highlighted': highlightedControl === 'today' }"
-      @click="goToToday"
-      @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'today', $data)"
-      @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'today', $data)"
-      aria-label="Today")
-      slot(name="today-button")
-    button.vuecal__arrow.vuecal__arrow--next(
-      type="button"
-      :class="{ 'vuecal__arrow--highlighted': highlightedControl === 'next' }"
-      @click="next"
-      @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'next', $data)"
-      @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'next', $data)"
-      :aria-label="`Next ${view.id}`")
-      slot(name="arrow-next")
+      button.vuecal__view-btn(
+        type="button"
+        v-if="v.enabled"
+        :class="{ 'vuecal__view-btn--active': view.id === id, 'vuecal__view-btn--highlighted': highlightedControl === id }"
+        v-for="(v, id) in viewProps.views"
+        @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, id, $data)"
+        @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, id, $data)"
+        @click="switchView(id, null, true)"
+        :aria-label="`${v.label} view`") {{ v.label }}
+    .vuecal__title-bar
+      .vuecal__flex.vuecal__title(grow)
+        //- Best way to disable transition is to convert it to simple div tag.
+        component(:is="options.transitions ? 'transition' : 'div'" :name="`slide-fade--${transitionDirection}`")
+          component(
+            :type="!!broaderView && 'button'"
+            :is="broaderView ? 'button' : 'span'"
+            :key="`${view.id}${view.startDate.toString()}`"
+            @click="!!broaderView && switchToBroaderView()"
+            :aria-label="!!broaderView && `Go to ${broaderView} view`")
+            slot(name="title")
+    .vuecal__bar-slider.vuecal__flex-end
+      button.vuecal__arrow.vuecal__arrow--prev(
+        type="button"
+        :class="{ 'vuecal__arrow--highlighted': highlightedControl === 'previous' }"
+        @click="previous"
+        @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'previous', $data)"
+        @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'previous', $data)"
+        :aria-label="`Previous ${view.id}`")
+        slot(name="arrow-prev")
+      button.vuecal__today-btn(
+        type="button"
+        v-if="options.todayButton"
+        :class="{ 'vuecal__today-btn--highlighted': highlightedControl === 'today' }"
+        @click="goToToday"
+        @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'today', $data)"
+        @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'today', $data)"
+        aria-label="Today")
+        slot(name="today-button")
+      button.vuecal__arrow.vuecal__arrow--next(
+        type="button"
+        :class="{ 'vuecal__arrow--highlighted': highlightedControl === 'next' }"
+        @click="next"
+        @dragenter="editEvents.drag && dnd && dnd.viewSelectorDragEnter($event, 'next', $data)"
+        @dragleave="editEvents.drag && dnd && dnd.viewSelectorDragLeave($event, 'next', $data)"
+        :aria-label="`Next ${view.id}`")
+        slot(name="arrow-next")
   weekdays-headings(
     v-if="viewProps.weekDaysInHeader"
     :week-days="weekDays"
@@ -126,47 +128,67 @@ export default {
 
 <style lang="scss">
 .vuecal {
+  &__flex-end{
+    display : flex;
+    justify-content: flex-end;
+  }
+
   &__header button {
     outline: none;
     font-family: inherit;
+  }
+
+  &__bar{
+    display : flex;
+    height : 60px;
+    padding-left : 20px;
+    padding-right : 20px;
+    border: 1px solid #EDEEEE;
+    background-color : #FAFAFA;
+  }
+
+  &__bar-slider{
+    flex : 1;
+    display : flex;
   }
 
   &__menu {
     padding: 0;
     margin: 0;
     list-style-type: none;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.02);
+    align-items: center;
   }
 
   &__view-btn {
     background: none;
     border: none;
-    padding: 0.3em 1em;
-    height: 2.2em;
-    font-size: 1.3em;
-    border-bottom: 0 solid currentColor;
+    padding: 0em 1em;
+    font-size: 1em;
+    line-height: 2em;
+    height : 2em;
+    margin-right : 0.3em;
+    border : 1px solid #000;
     cursor: pointer;
     color: inherit;
     box-sizing: border-box;
     transition: 0.2s;
-
+    border-radius: 5px;
     &--active {
-      border-bottom-width: 2px;
-      background: rgba(255, 255, 255, 0.15);
+      color : #FFF;
+      background-color: #202020;
     }
   }
 
   &__title-bar {
-    background-color: rgba(0, 0, 0, 0.1);
     display: flex;
+    flex : 1;
     align-items: center;
     text-align: center;
     justify-content: space-between;
     font-size: 1.4em;
     line-height: 1.3;
     min-height: 2em;
-
+    font-weight: bold;
     .vuecal--xsmall & {font-size: 1.3em;}
   }
 
@@ -192,7 +214,7 @@ export default {
     border: none;
 
     span.default {
-      font-size: 0.8em;
+      font-size: 1.2em;
       padding: 3px 6px;
       text-transform: uppercase;
       cursor: pointer;

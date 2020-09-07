@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template lang="pug">
 .vuecal__flex.vuecal(column :class="cssClasses" ref="vuecal" :lang="locale")
   vuecal-header(
@@ -376,7 +377,7 @@ export default {
           const { DragAndDrop } = response
           this.modules.dnd = new DragAndDrop(this)
         })
-        .catch(() => console.warn('Vue Cal: Missing drag & drop module.'))
+        // .catch(() => console.warn('Vue Cal: Missing drag & drop module.'))
     },
 
     /**

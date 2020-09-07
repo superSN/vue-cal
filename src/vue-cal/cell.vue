@@ -447,6 +447,15 @@ export default {
     width: 14.2857%;
   }
 
+  .vuecal__cells.month-view & {
+    padding : 7px;
+  }
+
+  &-date {
+    text-align: right;
+    font-size : 14px;
+  }
+
   .vuecal--hide-weekends .vuecal__cells.month-view &,
   .vuecal--hide-weekends .vuecal__cells.week-view & {
     width: 20%;
@@ -510,8 +519,9 @@ export default {
     outline: none;
 
     .vuecal--years-view &,
-    .vuecal--year-view &,
-    .vuecal--month-view & {justify-content: center;}
+    .vuecal--year-view & {justify-content: center;}
+
+    .vuecal--month-view {justify-content: flex-start;}
   }
 
   &-split {
