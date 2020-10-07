@@ -23,7 +23,7 @@
       slot(name="today-button")
         span.default {{ texts.today }}
     template(v-slot:title)
-      slot(name="title" :title="viewTitle" :view="view") {{ viewTitle }}
+      div.month-title(v-html="viewTitle")
     template(v-slot:weekday-heading="{ heading, view }")
       slot(name="weekday-heading" :heading="heading" :view="view")
     template(v-slot:split-label="{ split }")
@@ -257,6 +257,20 @@ export default {
 
   data () {
     return {
+      months_en: [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC'
+      ],
       ready: false, // Is vue-cal ready.
       // Make texts reactive before a locale is loaded.
       texts: { ...textsDefaults },
@@ -1392,7 +1406,8 @@ export default {
           break
         }
         case 'month': {
-          title = `${this.months[month].label} ${year}`
+          console.log(this.months_en)
+          title = `<div class='month-en'>${this.months_en[month]}</div><div class='month-small-title'>${this.months[month].label} ${year}</div>`
           break
         }
         case 'week': {

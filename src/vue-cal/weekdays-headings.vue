@@ -136,8 +136,9 @@ $weekdays-headings-height-with-splits: 3.4em;
     .weekday-label {
       flex-shrink: 0;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
+      padding-right : 15px;
     }
 
     .vuecal--small & .small, .vuecal--xsmall & .xsmall {display: block;}

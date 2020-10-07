@@ -25,7 +25,7 @@
             @click="!!broaderView && switchToBroaderView()"
             :aria-label="!!broaderView && `Go to ${broaderView} view`")
             slot(name="title")
-    .vuecal__bar-slider.vuecal__flex-end
+    .vuecal__bar-slider.vuecal__flex-end.vuecal__bar-slider-btn
       button.vuecal__arrow.vuecal__arrow--prev(
         type="button"
         :class="{ 'vuecal__arrow--highlighted': highlightedControl === 'previous' }"
@@ -140,60 +140,75 @@ export default {
 
   &__bar{
     display : flex;
-    height : 60px;
-    padding-left : 20px;
-    padding-right : 20px;
+    height : 150px;
+    padding : 30px;
     border: 1px solid #EDEEEE;
-    background-color : #FAFAFA;
   }
 
   &__bar-slider{
-    flex : 1;
     display : flex;
+  }
+
+  &__bar-slider-btn{
+    height : 20px;
   }
 
   &__menu {
     padding: 0;
     margin: 0;
     list-style-type: none;
-    align-items: center;
   }
 
   &__view-btn {
     background: none;
     border: none;
-    padding: 0em 1em;
     font-size: 1em;
-    height : 2em;
+    height : 37px;
+    width : 37px;
     margin-right : 0.3em;
-    border : 1px solid #000;
+    border : 1px solid #E0E0E0;
     cursor: pointer;
-    color: inherit;
+    color: #E0E0E0;
     box-sizing: border-box;
     transition: 0.2s;
-    border-radius: 5px;
+    border-radius: 50%;
     &--active {
-      color : #FFF;
-      background-color: #202020;
+      color : #202020;
+      border : 1px solid #202020;
     }
   }
 
   &__title-bar {
     display: flex;
     flex : 1;
-    align-items: center;
-    text-align: center;
     justify-content: space-between;
+    margin-left :60px;
     font-size: 1.4em;
     line-height: 1.3;
     min-height: 2em;
     font-weight: bold;
     .vuecal--xsmall & {font-size: 1.3em;}
+
+    .month-title{
+      display : flex;
+      align-items: flex-end;
+
+      .month-en{
+        font-size : 88px;
+        line-height: 88px;
+      }
+
+      .month-small-title{
+        margin-bottom : 10px;
+        margin-left : 15px;
+      }
+    }
   }
 
   &__title {
     position: relative;
-    justify-content: center;
+    color : #FF842A;
+    font-size : 24px;
 
     button {
       cursor: pointer;
