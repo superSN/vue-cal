@@ -25,6 +25,12 @@
             @click="!!broaderView && switchToBroaderView()"
             :aria-label="!!broaderView && `Go to ${broaderView} view`")
             slot(name="title")
+    .vuecal__minds-copy-box(
+      @click="mindsCopyHandle()"
+    )
+      div.minds-copy-title 灵感手抄本
+      div.minds-copy-text
+        slot(name="minds-copy")
     .vuecal__bar-slider.vuecal__flex-end.vuecal__bar-slider-btn
       button.vuecal__arrow.vuecal__arrow--prev(
         type="button"
@@ -72,7 +78,7 @@
 import WeekdaysHeadings from './weekdays-headings'
 
 export default {
-  inject: ['vuecal', 'previous', 'next', 'switchView', 'updateSelectedDate', 'modules', 'view'],
+  inject: ['vuecal', 'previous', 'next', 'switchView', 'updateSelectedDate', 'modules', 'view', 'mindsCopyHandle'],
   components: { WeekdaysHeadings },
   props: {
     // Vuecal main component options (props).
@@ -141,12 +147,33 @@ export default {
   &__bar{
     display : flex;
     height : 150px;
-    padding : 30px;
+    padding : 20px;
     border: 1px solid #EDEEEE;
   }
 
   &__bar-slider{
     display : flex;
+  }
+
+  &__minds-copy-box{
+    cursor: pointer;
+    width : 300px;
+    display : flex;
+    flex-direction: column;
+
+    .minds-copy-title{
+      color : #FF842A;
+      font-size : 14px;
+      line-height: 14px;
+    }
+
+    .minds-copy-text{
+      margin-top : 15px;
+      font-size : 16px;
+      line-height : 24px;
+      color : #8D8D8D;
+      flex : 1
+    }
   }
 
   &__bar-slider-btn{

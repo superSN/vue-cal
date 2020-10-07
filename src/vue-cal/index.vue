@@ -24,6 +24,8 @@
         span.default {{ texts.today }}
     template(v-slot:title)
       div.month-title(v-html="viewTitle")
+    template(v-slot:minds-copy)
+      div(v-html="minds_copy")
     template(v-slot:weekday-heading="{ heading, view }")
       slot(name="weekday-heading" :heading="heading" :view="view")
     template(v-slot:split-label="{ split }")
@@ -193,13 +195,16 @@ export default {
       switchView: this.switchView,
       updateSelectedDate: this.updateSelectedDate,
       editEvents: this.editEvents,
+      mindsCopyHandle: this.mindsCopyHandle,
       // Objects.
       view: this.view,
       domEvents: this.domEvents
+
     }
   },
 
   props: {
+    minds_copy: { type: String, default: '相爱的人不该争吵，<br />因为他们只有两人，<br />与他们作对的是整个世界。' },
     activeView: { type: String, default: 'week' },
     // Only used if there are daySplits with minSplitWidth, to add the same height top spacer on time column.
     allDayBarHeight: { type: [String, Number], default: '25px' },
@@ -405,6 +410,10 @@ export default {
       this.transitionDirection = 'right'
       const view = this.enabledViews[this.enabledViews.indexOf(this.view.id) + 1]
       if (view) this.switchView(view, date)
+    },
+
+    mindsCopyHandle () {
+      this.$emit('minds-copy-click', {})
     },
 
     /**
@@ -1406,7 +1415,6 @@ export default {
           break
         }
         case 'month': {
-          console.log(this.months_en)
           title = `<div class='month-en'>${this.months_en[month]}</div><div class='month-small-title'>${this.months[month].label} ${year}</div>`
           break
         }
