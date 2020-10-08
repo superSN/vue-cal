@@ -168,6 +168,7 @@ export default {
     }
 
     .minds-copy-text{
+      white-space: pre-wrap;
       margin-top : 15px;
       font-size : 16px;
       line-height : 24px;

@@ -204,7 +204,7 @@ export default {
   },
 
   props: {
-    minds_copy: { type: String, default: '相爱的人不该争吵，<br />因为他们只有两人，<br />与他们作对的是整个世界。' },
+    minds_copy: { type: String, default: '' },
     activeView: { type: String, default: 'week' },
     // Only used if there are daySplits with minSplitWidth, to add the same height top spacer on time column.
     allDayBarHeight: { type: [String, Number], default: '25px' },
